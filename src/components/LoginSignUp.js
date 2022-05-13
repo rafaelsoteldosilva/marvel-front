@@ -65,7 +65,7 @@ const defaultValues = {
 
 const requiredFields = {
    email: true,
-   password: false,
+   password: true,
 };
 
 const defaultErrorValuesRef = {

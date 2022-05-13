@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../globals/auth";
 import styled, { css } from "styled-components";
@@ -37,7 +37,12 @@ export const Navbar = () => {
                Home
             </NavLink>
             {!auth.user && (
-               <span onClick={handleLoginOnclick} style={{ cursor: "pointer" }}>
+               <span
+                  onClick={handleLoginOnclick}
+                  style={{
+                     cursor: "pointer",
+                  }}
+               >
                   Login
                </span>
             )}
@@ -45,7 +50,9 @@ export const Navbar = () => {
             {!auth.user && (
                <span
                   onClick={handleSignUpOnclick}
-                  style={{ cursor: "pointer" }}
+                  style={{
+                     cursor: "pointer",
+                  }}
                >
                   Registrarse
                </span>
