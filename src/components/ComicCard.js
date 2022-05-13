@@ -1,10 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as heartRegular } from "@fortawesome/free-regular-svg-icons";
-import { faHeart as heartSolid } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
+import { faHeartCrack } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../globals/auth";
 import { useNavigate } from "react-router-dom";
+
+import {
+   getAllFavoriteComics,
+   addFavoriteComic,
+   deleteFavoriteComic,
+} from "../redux/actions/favoriteComicsActions";
 
 const Card = styled.div`
    position: relative;
@@ -65,7 +72,7 @@ const CardActionButtons = styled.div``;
 const ShowIcon = styled(FontAwesomeIcon)`
    margin: 5px;
    font-size: 16px;
-   color: ${(props) => (props.heartClicked ? "red" : "black")};
+   color: ${(props) => (props.heartIsRed ? "red" : "black")};
    &:hover {
       color: red;
    }
@@ -76,27 +83,40 @@ const cutDescription = (description) => {
    return `${description}`.substring(0, 90).concat(ellipsis);
 };
 
-const ComicCard = ({ comicObject, index }) => {
-   const auth = useAuth();
-   const [heartClicked, setHeartClicked] = useState(false);
+const ComicCard = ({
+   callFromFavorites,
+   comicObject,
+   index,
+   favoriteComics,
+   addFavoriteComicLocal,
+   deleteFavoriteComicLocal,
+}) => {
+   const { user } = useAuth();
 
    let navigate = useNavigate();
-
-   useEffect(() => {
-      // if (auth.user) {
-      //    const user = auth.user;
-      //    if (user.favorites.includes(comicObject.id)) {
-      //       setHeartClicked(true);
-      //    }
-      // }
-   }, []);
 
    const handleClickOnComicCard = (comicObj, e) => {
       // navigate("/comicPath");
    };
 
    const handleHeartClick = (comicObj, e) => {
-      setHeartClicked(!heartClicked);
+      if (user) {
+         if (callFromFavorites) {
+            deleteFavoriteComicLocal(user.id, comicObj.id);
+         } else {
+            // calling from Home page
+
+            if (
+               favoriteComics.find(
+                  (favoriteComic) => favoriteComic.id === comicObj.id
+               )
+            ) {
+               deleteFavoriteComicLocal(user.id, comicObj.id);
+            } else {
+               addFavoriteComicLocal(user._id, comicObj);
+            }
+         }
+      }
    };
 
    return (
@@ -109,10 +129,10 @@ const ComicCard = ({ comicObject, index }) => {
             </CardNoImageContent>
          </CardContent>
          <CardActionButtons>
-            {auth.user && (
+            {user && (
                <ShowIcon
-                  heartClicked={heartClicked}
-                  icon={heartClicked ? heartSolid : heartRegular}
+                  heartIsRed={false}
+                  icon={callFromFavorites ? faHeartCrack : regularHeart}
                   onClick={(e) => handleHeartClick(comicObject, e)}
                />
             )}
@@ -121,4 +141,21 @@ const ComicCard = ({ comicObject, index }) => {
    );
 };
 
-export default ComicCard;
+function mapStateToProps(state) {
+   return {
+      favoriteComics: state.favoriteComicsReducer.favoriteComics,
+   };
+}
+
+function mapDispatchToProps(dispatch) {
+   return {
+      addFavoriteComicLocal: (userId, comicObj) => {
+         return dispatch(addFavoriteComic(userId, comicObj));
+      },
+      deleteFavoriteComicLocal: (userId, favoriteComicId) => {
+         return dispatch(deleteFavoriteComic(userId, favoriteComicId));
+      },
+   };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ComicCard);

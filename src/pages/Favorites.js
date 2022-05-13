@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { getAllComics } from "../redux/actions/comicsActions";
+import { getAllFavoritesComics } from "../redux/actions/favoriteComicsActions";
 import { useAuth } from "../globals/auth";
 import styled from "styled-components";
 import ComicCard from "../components/ComicCard";
@@ -23,24 +23,26 @@ const ContentContainer = styled.div`
    margin-bottom: 1em;
 `;
 
-const Home = ({ comics, comicsLoaded, getComics }) => {
+const Favorites = ({ favoriteComics, favoriteComicsLoaded }) => {
    const auth = useAuth();
-
-   useEffect(() => {
-      getComics();
-   }, []);
 
    return (
       <React.Fragment>
-         {!comicsLoaded && (
+         {!favoriteComicsLoaded && (
             <ContentContainer>
                <p>Loading data...</p>
             </ContentContainer>
          )}
-         {comicsLoaded && (
+         {favoriteComicsLoaded && (
             <ContentContainer>
-               {comics.map((comicInfo, ndx) => {
-                  return <ComicCard comicObject={comicInfo} index={ndx} />;
+               {favoriteComics.map((comicInfo, ndx) => {
+                  return (
+                     <ComicCard
+                        callFromFavorites={true}
+                        comicObject={comicInfo}
+                        index={ndx}
+                     />
+                  );
                })}
             </ContentContainer>
          )}
@@ -50,17 +52,17 @@ const Home = ({ comics, comicsLoaded, getComics }) => {
 
 function mapStateToProps(state) {
    return {
-      comics: state.comicsReducer.comics,
-      comicsLoaded: state.comicsReducer.comicsLoaded,
+      favoriteComics: state.favoriteComicsReducer.favoriteComics,
+      favoriteComicsLoaded: state.favoriteComicsReducer.favoriteComicsLoaded,
    };
 }
 
-function mapDispatchToProps(dispatch) {
-   return {
-      getComics: () => {
-         return dispatch(getAllComics());
-      },
-   };
-}
+// function mapDispatchToProps(dispatch) {
+//    return {
+//       getComics: () => {
+//          return dispatch(getAllFavoritesComics());
+//       },
+//    };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, null)(Favorites);

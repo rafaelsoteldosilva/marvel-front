@@ -26,15 +26,11 @@ export const getFavoriteComicsFailure = (error) => ({
 export function getAllFavoriteComics(userId) {
    return (dispatch) => {
       dispatch(getFavoriteComicsBegin);
-      let apiUrl = "http://localhost:3000/v1/favoriteComics/?userId=" + userId;
+      let apiUrl = "http://localhost:3001/v1/favoritecomics/?userId=" + userId;
       axios
          .get(apiUrl)
          .then((res) => {
             let newDataObject = [];
-            console.log(
-               "************** getAllFavoriteComics:: res.data: ",
-               res.data
-            );
             res.data.forEach((comic) => {
                newDataObject.push({
                   userId,
@@ -53,11 +49,20 @@ export function getAllFavoriteComics(userId) {
    };
 }
 
-export function addFavoriteComic(userId, favoriteComicObject) {
+export function addFavoriteComic(userId, comicObject) {
    return (dispatch) => {
-      let apiUrl = "http://localhost:3000/v1/favoriteComics/?userId=" + userId;
+      let apiUrl = `http://localhost:3001/v1/favoritecomics/?userId=${userId}`;
+      let newFavoriteComicObect = {
+         userId,
+         favoriteComicId: comicObject.comicId,
+         favoriteComicTitle: comicObject.comicTitle,
+         favoriteComicPrice: comicObject.comicPrice,
+         favoriteComicImageUrl: comicObject.comicImageUrl,
+         favoriteComicText: comicObject.comicText,
+      };
+
       axios
-         .post(apiUrl, { favoriteComicObject })
+         .post(apiUrl, newFavoriteComicObect)
          .then(() => {
             dispatch(favoriteComicsReset());
             dispatch(getAllFavoriteComics(userId));
@@ -68,7 +73,7 @@ export function addFavoriteComic(userId, favoriteComicObject) {
 
 export function deleteFavoriteComic(userId, favoriteComicId) {
    return (dispatch) => {
-      let apiUrl = `http://localhost:3000/v1/favoriteComics/?userId=${userId}&favoriteComicId=${favoriteComicId}`;
+      let apiUrl = `http://localhost:3001/v1/favoritecomics/?userId=${userId}&favoriteComicId=${favoriteComicId}`;
       axios
          .delete(apiUrl)
          .then(() => {

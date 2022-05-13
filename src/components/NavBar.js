@@ -36,6 +36,9 @@ export const Navbar = () => {
             <NavLink to="/home" style={navLinkStyles}>
                Home
             </NavLink>
+            <NavLink to="/favorites" style={navLinkStyles}>
+               Favorites
+            </NavLink>
             {!auth.user && (
                <span
                   onClick={handleLoginOnclick}
@@ -54,7 +57,7 @@ export const Navbar = () => {
                      cursor: "pointer",
                   }}
                >
-                  Registrarse
+                  Sign Up
                </span>
             )}
             {auth.user && (

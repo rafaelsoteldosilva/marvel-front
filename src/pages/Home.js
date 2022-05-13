@@ -40,7 +40,13 @@ const Home = ({ comics, comicsLoaded, getComics }) => {
          {comicsLoaded && (
             <ContentContainer>
                {comics.map((comicInfo, ndx) => {
-                  return <ComicCard comicObject={comicInfo} index={ndx} />;
+                  return (
+                     <ComicCard
+                        callFromFavorites={false}
+                        comicObject={comicInfo}
+                        index={ndx}
+                     />
+                  );
                })}
             </ContentContainer>
          )}

@@ -5,6 +5,8 @@ import axios from "axios";
 import styled from "styled-components";
 
 import * as globalStyles from "../globals/globalStyles";
+import { getAllFavoriteComics } from "../redux/actions/favoriteComicsActions";
+import { connect } from "react-redux";
 
 const ContentContainer = styled.div`
    position: relative;
@@ -81,8 +83,8 @@ const initialTouchedOrError = {
 const email = "email";
 const password = "password";
 
-export const LoginSignUp = ({ isSignUp }) => {
-   const { users, login, setUsers, logout } = useAuth();
+const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
+   const { users, login, setUsers, logout, user } = useAuth();
    const navigate = useNavigate();
    const [formValues, setFormValues] = useState(defaultValues);
    const [touched, setTouched] = useState(initialTouchedOrError);
@@ -97,11 +99,11 @@ export const LoginSignUp = ({ isSignUp }) => {
    };
 
    const createUser = (user) => {
-      alert("creating user");
       const res = axios
          .post("http://localhost:3001/v1/users", user)
          .then((res) => {
             login({
+               _id: res.data._id,
                email: formValues.email,
                password: formValues.password,
             });
@@ -126,11 +128,11 @@ export const LoginSignUp = ({ isSignUp }) => {
             );
             navigate("/");
          } else {
-            alert("creating user");
             createUser({
                email: formValues.email,
                password: formValues.password,
             });
+            getAllFavoriteComicsLocal(user._id);
             navigate("/");
          }
       } else {
@@ -141,6 +143,7 @@ export const LoginSignUp = ({ isSignUp }) => {
          );
          if (userFound) {
             login(userFound);
+            getAllFavoriteComicsLocal(user._id);
             navigate("/");
          } else {
             alert(
@@ -333,3 +336,19 @@ export const LoginSignUp = ({ isSignUp }) => {
       </ContentContainer>
    );
 };
+
+// function mapStateToProps(state) {
+//    return {
+//       favoriteComics: state.favoriteComicsReducer.favoriteComics,
+//    };
+// }
+
+function mapDispatchToProps(dispatch) {
+   return {
+      getAllFavoriteComicsLocal: (userId) => {
+         return dispatch(getAllFavoriteComics(userId));
+      },
+   };
+}
+
+export default connect(null, mapDispatchToProps)(LoginSignUp);
