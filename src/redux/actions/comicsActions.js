@@ -23,7 +23,7 @@ export function getAllComics() {
    return (dispatch) => {
       let newDataObject = [];
       dispatch(getComicsBegin);
-      let apiUrl = `https://gateway.marvel.com/v1/public/comics?ts=1&apikey=${env.MARVEL_APIKEY}&hash=${env.MARVEL_HASH}`;
+      let apiUrl = `https://gateway.marvel.com/v1/public/comics?ts=1&apikey=f0bb0ad1457c53c928d333e245ab9226&hash=63a07509201a80b78f98099542b9b048`;
       axios
          .get(apiUrl)
          .then((res) => {

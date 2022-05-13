@@ -34,11 +34,11 @@ export function getAllFavoriteComics(userId) {
             res.data.forEach((comic) => {
                newDataObject.push({
                   userId,
-                  favoriteComicId: comic.favoriteComicId,
-                  favoriteComicTitle: comic.favoriteComicTitle,
-                  favoriteComicPrice: comic.favoriteComicPrice,
-                  favoriteComicImageUrl: comic.favoriteComicImageUrl,
-                  favoriteComicText: comic.favoriteComicText,
+                  comicId: comic.comicId,
+                  comicTitle: comic.comicTitle,
+                  comicPrice: comic.comicPrice,
+                  comicImageUrl: comic.comicImageUrl,
+                  comicText: comic.comicText,
                });
             });
             dispatch(getFavoriteComicsSuccess(newDataObject));
@@ -53,12 +53,11 @@ export function addFavoriteComic(userId, comicObject) {
    return (dispatch) => {
       let apiUrl = `http://localhost:3001/v1/favoritecomics/?userId=${userId}`;
       let newFavoriteComicObect = {
-         userId,
-         favoriteComicId: comicObject.comicId,
-         favoriteComicTitle: comicObject.comicTitle,
-         favoriteComicPrice: comicObject.comicPrice,
-         favoriteComicImageUrl: comicObject.comicImageUrl,
-         favoriteComicText: comicObject.comicText,
+         comicId: comicObject.comicId,
+         comicTitle: comicObject.comicTitle,
+         comicPrice: comicObject.comicPrice,
+         comicImageUrl: comicObject.comicImageUrl,
+         comicText: comicObject.comicText,
       };
 
       axios
@@ -74,6 +73,7 @@ export function addFavoriteComic(userId, comicObject) {
 export function deleteFavoriteComic(userId, favoriteComicId) {
    return (dispatch) => {
       let apiUrl = `http://localhost:3001/v1/favoritecomics/?userId=${userId}&favoriteComicId=${favoriteComicId}`;
+      console.log(apiUrl);
       axios
          .delete(apiUrl)
          .then(() => {

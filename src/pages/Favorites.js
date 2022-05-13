@@ -26,6 +26,10 @@ const ContentContainer = styled.div`
 const Favorites = ({ favoriteComics, favoriteComicsLoaded }) => {
    const auth = useAuth();
 
+   useEffect(() => {
+      console.log("******* Favorites:: favoriteComics:: ", favoriteComics);
+   }, []);
+
    return (
       <React.Fragment>
          {!favoriteComicsLoaded && (

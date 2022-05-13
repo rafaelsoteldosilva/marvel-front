@@ -105,15 +105,17 @@ const ComicCard = ({
             deleteFavoriteComicLocal(user.id, comicObj.id);
          } else {
             // calling from Home page
-
-            if (
-               favoriteComics.find(
-                  (favoriteComic) => favoriteComic.id === comicObj.id
-               )
-            ) {
-               deleteFavoriteComicLocal(user.id, comicObj.id);
-            } else {
+            console.log("****** favoriteComics:: ", favoriteComics);
+            let foundStatus = favoriteComics.find(
+               (favoriteComic) =>
+                  parseInt(favoriteComic.comicId) === comicObj.comicId
+            );
+            if (typeof foundStatus === "undefined") {
+               // not found, adding...
                addFavoriteComicLocal(user._id, comicObj);
+            } else {
+               // found, deleting...
+               deleteFavoriteComicLocal(user._id, comicObj.comicId);
             }
          }
       }

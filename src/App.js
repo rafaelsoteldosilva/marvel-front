@@ -5,7 +5,7 @@ import { AuthProvider } from "./globals/auth";
 import { Navbar } from "./components/NavBar";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
-import { Profile } from "./pages/Profile";
+import Profile from "./pages/Profile";
 import LoginSignUp from "./components/LoginSignUp";
 import { GlobalStyles } from "./globals/globalStyles";
 
