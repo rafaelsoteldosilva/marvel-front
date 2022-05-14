@@ -42,6 +42,10 @@ export function getAllFavoriteComics(userId) {
                });
             });
             dispatch(getFavoriteComicsSuccess(newDataObject));
+
+            if (newDataObject.length === 0) {
+               dispatch(favoriteComicsReset());
+            }
          })
          .catch((error) => {
             dispatch(getFavoriteComicsFailure(error));
@@ -73,7 +77,6 @@ export function addFavoriteComic(userId, comicObject) {
 export function deleteFavoriteComic(userId, favoriteComicId) {
    return (dispatch) => {
       let apiUrl = `http://localhost:3001/v1/favoritecomics/?userId=${userId}&favoriteComicId=${favoriteComicId}`;
-      console.log(apiUrl);
       axios
          .delete(apiUrl)
          .then(() => {

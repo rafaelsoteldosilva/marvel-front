@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeartCrack } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../globals/auth";
 import { useNavigate } from "react-router-dom";
@@ -78,6 +79,15 @@ const ShowIcon = styled(FontAwesomeIcon)`
    }
 `;
 
+const ShowIconFavorite = styled(FontAwesomeIcon)`
+   margin: 5px;
+   font-size: 16px;
+   color: rgb(128, 128, 128);
+   &:hover {
+      color: black;
+   }
+`;
+
 const cutDescription = (description) => {
    let ellipsis = `${description}`.length > 90 ? "..." : "";
    return `${description}`.substring(0, 90).concat(ellipsis);
@@ -95,29 +105,62 @@ const ComicCard = ({
 
    let navigate = useNavigate();
 
+   // comicId: 82965;
+   // comicImageUrl: "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_xlarge.jpg";
+   // comicPrice: 0;
+   // comicText: "No text available";
+   // comicTitle: "Marvel Previews (2017)";
+
    const handleClickOnComicCard = (comicObj, e) => {
-      // navigate("/comicPath");
+      console.log("******* ComicCard:: sending comicObj: ", comicObj);
+      navigate("/comicComplete", {
+         state: {
+            id: comicObj.comicId,
+            image: comicObj.comicImageUrl,
+            title: comicObj.comicTitle,
+            text: comicObj.comicText,
+            price: comicObj.comicPrice,
+         },
+      });
+   };
+
+   const isFavorite = (favoriteComics, comicObject) => {
+      let isFavorite = false;
+      if (favoriteComics.length > 0) {
+         favoriteComics.forEach((favoriteComic) => {
+            if (parseInt(favoriteComic.comicId) === comicObject.comicId) {
+               isFavorite = true;
+            }
+         });
+      }
+      return isFavorite;
+   };
+
+   const isfavorite = (favoriteComics, comicObject) => {
+      let isFavorite = false;
+      if (favoriteComics.length > 0) {
+         favoriteComics.forEach((favoriteComic) => {
+            if (parseInt(favoriteComic.comicId) === comicObject.comicId) {
+               isFavorite = true;
+            }
+         });
+      }
+      return isFavorite;
    };
 
    const handleHeartClick = (comicObj, e) => {
       if (user) {
-         if (callFromFavorites) {
-            deleteFavoriteComicLocal(user.id, comicObj.id);
+         if (isFavorite(favoriteComics, comicObj)) {
+            deleteFavoriteComicLocal(user._id, comicObj.comicId);
          } else {
-            // calling from Home page
-            console.log("****** favoriteComics:: ", favoriteComics);
-            let foundStatus = favoriteComics.find(
-               (favoriteComic) =>
-                  parseInt(favoriteComic.comicId) === comicObj.comicId
-            );
-            if (typeof foundStatus === "undefined") {
-               // not found, adding...
-               addFavoriteComicLocal(user._id, comicObj);
-            } else {
-               // found, deleting...
-               deleteFavoriteComicLocal(user._id, comicObj.comicId);
-            }
+            addFavoriteComicLocal(user._id, comicObj);
          }
+      }
+   };
+
+   const handleBrokenHeartClick = (comicObj, e) => {
+      if (user) {
+         deleteFavoriteComicLocal(user._id, comicObj.id);
       }
    };
 
@@ -131,10 +174,23 @@ const ComicCard = ({
             </CardNoImageContent>
          </CardContent>
          <CardActionButtons>
-            {user && (
+            {user && callFromFavorites && (
+               <ShowIconFavorite
+                  icon={faHeartCrack}
+                  onClick={(e) => handleBrokenHeartClick(comicObject, e)}
+               />
+            )}
+            {user && !callFromFavorites && (
                <ShowIcon
-                  heartIsRed={false}
-                  icon={callFromFavorites ? faHeartCrack : regularHeart}
+                  heartIsRed={isFavorite(favoriteComics, comicObject)}
+                  isFavorite={callFromFavorites}
+                  icon={
+                     callFromFavorites
+                        ? faHeartCrack
+                        : isFavorite(favoriteComics, comicObject)
+                        ? solidHeart
+                        : regularHeart
+                  }
                   onClick={(e) => handleHeartClick(comicObject, e)}
                />
             )}

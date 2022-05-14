@@ -84,7 +84,7 @@ const email = "email";
 const password = "password";
 
 const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
-   const { users, login, setUsers, logout, user } = useAuth();
+   const auth = useAuth();
    const navigate = useNavigate();
    const [formValues, setFormValues] = useState(defaultValues);
    const [touched, setTouched] = useState(initialTouchedOrError);
@@ -92,17 +92,11 @@ const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
    const [disableSendButton, setDisableSendButton] = useState(false);
    const [forceRender, setForceRender] = useState(false);
 
-   const getUsers = () => {
-      const res = axios.get("http://localhost:3001/v1/users").then((res) => {
-         setUsers(res.data);
-      });
-   };
-
    const createUser = (user) => {
       const res = axios
          .post("http://localhost:3001/v1/users", user)
          .then((res) => {
-            login({
+            auth.registerNewUserAndLogin({
                _id: res.data._id,
                email: formValues.email,
                password: formValues.password,
@@ -114,15 +108,17 @@ const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
    };
 
    useEffect(() => {
-      getUsers();
+      const res = axios.get("http://localhost:3001/v1/users").then((res) => {
+         auth.loadUsers(res.data);
+      });
    }, []);
 
    const performOk = () => {
       if (isSignUp) {
-         const userFound = users.find(
-            (user) => user.email === formValues.email
-         );
-         if (userFound) {
+         // const userFound = users.find(
+         //    (user) => user.email === formValues.email
+         // );
+         if (auth.isARegisteredUser(formValues.email)) {
             alert(
                `${formValues.email} ya es un usuario registrado, por favor, haga LogIn`
             );
@@ -132,26 +128,21 @@ const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
                email: formValues.email,
                password: formValues.password,
             });
-            getAllFavoriteComicsLocal(user._id);
             navigate("/");
          }
       } else {
-         const userFound = users.find(
-            (user) =>
-               user.email === formValues.email &&
-               user.password === formValues.password
-         );
-         if (userFound) {
-            login(userFound);
-            getAllFavoriteComicsLocal(user._id);
+         if (auth.checkUserPassword(formValues.email, formValues.password)) {
+            auth.login(formValues.email);
+
             navigate("/");
          } else {
             alert(
-               `${formValues.email} no es un usuario registrado, por favor, registrate`
+               `${formValues.email} no está registrado o no coindide el password`
             );
             navigate("/");
          }
       }
+      navigate("/");
    };
 
    const performCancel = () => {
@@ -322,16 +313,10 @@ const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
                   {touched[password] && errorMessagesRefValues.current.password}
                </FieldErrorText>
             </FieldContainer>
-            <ThisButton
-               type="submit"
-               disabled={disableSendButton}
-               onClick={performOk}
-            >
+            <ThisButton disabled={disableSendButton} onClick={performOk}>
                {isSignUp ? "SIGN UP" : "LOG IN"}
             </ThisButton>
-            <ThisButton type="submit" onClick={performCancel}>
-               CANCEL
-            </ThisButton>
+            <ThisButton onClick={performCancel}>CANCEL</ThisButton>
          </FormContainer>
       </ContentContainer>
    );

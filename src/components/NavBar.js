@@ -2,69 +2,61 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../globals/auth";
 import styled, { css } from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const NavStripe = styled.nav`
    display: flex;
    flex-direction: row;
 `;
 
+const NavItem = css`
+   margin-left: 1em;
+   cursor: pointer;
+   text-decoration: none;
+`;
+
+export const NavElementAlwaysShow = styled(NavLink)`
+   ${NavItem}
+`;
+export const NavElementShowWhenLoggedIn = styled(NavLink)`
+   ${NavItem}
+   display: ${({ logged }) => (logged ? "inline" : "none")};
+`;
+
+export const NavElementNoShowWhenLoggedIn = styled(NavLink)`
+   ${NavItem}
+   display: ${({ logged }) => (logged ? "none" : "inline")};
+`;
+
+// const NavElementAlwaysShow = styled(NavLink)`
+//    ${NavItem}
+// `;
+
 export const Navbar = () => {
    const auth = useAuth();
-   const navigate = useNavigate();
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-   const navLinkStyles = ({ isActive }) => {
-      return {
-         color: "black",
-         fontWeight: isActive ? "bold" : "normal",
-         textDecoration: "none",
-         display: auth.user ? "block" : "none",
-      };
-   };
-
-   const handleLoginOnclick = () => {
-      navigate("/login");
-   };
-
-   const handleSignUpOnclick = () => {
-      navigate("/signup");
-   };
+   useEffect(() => {
+      setIsLoggedIn(auth.user === null ? false : true);
+   }, [auth.user]);
 
    return (
       <>
          <NavStripe>
-            <NavLink to="/home" style={navLinkStyles}>
+            <NavElementAlwaysShow activeClassName="any" to="/home">
                Home
-            </NavLink>
-            <NavLink to="/favorites" style={navLinkStyles}>
+            </NavElementAlwaysShow>
+            <NavElementShowWhenLoggedIn logged={isLoggedIn} to="/favorites">
                Favorites
-            </NavLink>
-            {!auth.user && (
-               <span
-                  onClick={handleLoginOnclick}
-                  style={{
-                     cursor: "pointer",
-                  }}
-               >
-                  Login
-               </span>
-            )}
-            &nbsp;&nbsp;&nbsp;
-            {!auth.user && (
-               <span
-                  onClick={handleSignUpOnclick}
-                  style={{
-                     cursor: "pointer",
-                  }}
-               >
-                  Sign Up
-               </span>
-            )}
-            {auth.user && (
-               <NavLink to="/profile" style={navLinkStyles}>
-                  Pefil
-               </NavLink>
-            )}
+            </NavElementShowWhenLoggedIn>
+            <NavElementNoShowWhenLoggedIn logged={isLoggedIn} to="/login">
+               Login
+            </NavElementNoShowWhenLoggedIn>
+            <NavElementNoShowWhenLoggedIn logged={isLoggedIn} to="/signup">
+               Sign Up
+            </NavElementNoShowWhenLoggedIn>
+            <NavElementShowWhenLoggedIn logged={isLoggedIn} to="/profile">
+               Profile
+            </NavElementShowWhenLoggedIn>
          </NavStripe>
       </>
    );

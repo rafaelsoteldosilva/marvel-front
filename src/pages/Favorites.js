@@ -26,29 +26,27 @@ const ContentContainer = styled.div`
 const Favorites = ({ favoriteComics, favoriteComicsLoaded }) => {
    const auth = useAuth();
 
-   useEffect(() => {
-      console.log("******* Favorites:: favoriteComics:: ", favoriteComics);
-   }, []);
-
    return (
       <React.Fragment>
          {!favoriteComicsLoaded && (
             <ContentContainer>
-               <p>Loading data...</p>
+               <p>You haven't selected favorite ones yet...</p>
             </ContentContainer>
          )}
          {favoriteComicsLoaded && (
-            <ContentContainer>
-               {favoriteComics.map((comicInfo, ndx) => {
-                  return (
-                     <ComicCard
-                        callFromFavorites={true}
-                        comicObject={comicInfo}
-                        index={ndx}
-                     />
-                  );
-               })}
-            </ContentContainer>
+            <>
+               <ContentContainer>
+                  {favoriteComics.map((comicInfo, ndx) => {
+                     return (
+                        <ComicCard
+                           callFromFavorites={true}
+                           comicObject={comicInfo}
+                           index={ndx}
+                        />
+                     );
+                  })}
+               </ContentContainer>
+            </>
          )}
       </React.Fragment>
    );
@@ -60,13 +58,5 @@ function mapStateToProps(state) {
       favoriteComicsLoaded: state.favoriteComicsReducer.favoriteComicsLoaded,
    };
 }
-
-// function mapDispatchToProps(dispatch) {
-//    return {
-//       getComics: () => {
-//          return dispatch(getAllFavoritesComics());
-//       },
-//    };
-// }
 
 export default connect(mapStateToProps, null)(Favorites);

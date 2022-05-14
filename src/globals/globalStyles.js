@@ -1,5 +1,16 @@
 import styled, { createGlobalStyle } from "styled-components";
 
+export const globalTheme = {
+   colors: {
+      darkGrayColor: "hsl(0, 0%, 15%)",
+      lighterDarkGrayColor: "hsl(0, 0%, 20%)",
+      mediumGrayColor: "hsl(0, 0%, 30%)",
+      lightGrayColor: "hsl(0, 0%, 50%)",
+      whiteColor: "white",
+      blackColor: "black",
+   },
+};
+
 export const GlobalStyles = createGlobalStyle`
     html, body {
         margin: 0;

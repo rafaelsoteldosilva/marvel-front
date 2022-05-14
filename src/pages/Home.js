@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { getAllComics } from "../redux/actions/comicsActions";
+import { getAllFavoriteComics } from "../redux/actions/favoriteComicsActions";
 import { useAuth } from "../globals/auth";
 import styled from "styled-components";
 import ComicCard from "../components/ComicCard";
@@ -23,12 +24,27 @@ const ContentContainer = styled.div`
    margin-bottom: 1em;
 `;
 
-const Home = ({ comics, comicsLoaded, getComics }) => {
+const Home = ({
+   comics,
+   comicsLoaded,
+   getComicsLocal,
+   getAllFavoriteComicsLocal,
+}) => {
    const auth = useAuth();
 
    useEffect(() => {
-      getComics();
+      getComicsLocal();
    }, []);
+
+   useEffect(() => {
+      if (auth.user) {
+         console.log(
+            "****** Home:: reading all favorites of auth.user: ",
+            auth.user
+         );
+         getAllFavoriteComicsLocal(auth.user._id);
+      }
+   }, [auth.user]);
 
    return (
       <React.Fragment>
@@ -63,8 +79,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
    return {
-      getComics: () => {
+      getComicsLocal: () => {
          return dispatch(getAllComics());
+      },
+      getAllFavoriteComicsLocal: (userId) => {
+         return dispatch(getAllFavoriteComics(userId));
       },
    };
 }

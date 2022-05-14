@@ -6,8 +6,33 @@ export const AuthProvider = ({ children }) => {
    const [user, setUser] = useState(null);
    const [users, setUsers] = useState(null);
 
-   const login = (user) => {
+   const loadUsers = (usersPayload) => {
+      setUsers([...usersPayload]);
+   };
+
+   const registerNewUserAndLogin = (user) => {
+      setUsers((prevUsers) => {
+         return [...prevUsers, user];
+      });
+      console.log(
+         "****** auth:: registerNewUserAndLogin: logging user.email: ",
+         user.email
+      );
       setUser(user);
+   };
+
+   const isARegisteredUser = (email) => {
+      return users.some((user) => user.email === email);
+   };
+
+   const checkUserPassword = (email, password) => {
+      const foundUser = users.find((user) => user.email === email);
+      return foundUser ? true : false;
+   };
+
+   const login = (email) => {
+      let loginToUser = users.find((user) => user.email === email);
+      setUser(loginToUser);
    };
 
    const logout = () => {
@@ -17,8 +42,10 @@ export const AuthProvider = ({ children }) => {
    return (
       <AuthContext.Provider
          value={{
-            users,
-            setUsers,
+            loadUsers,
+            isARegisteredUser,
+            registerNewUserAndLogin,
+            checkUserPassword,
             user,
             login,
             logout,
