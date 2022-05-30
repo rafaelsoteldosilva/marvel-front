@@ -112,7 +112,6 @@ const ComicCard = ({
    // comicTitle: "Marvel Previews (2017)";
 
    const handleClickOnComicCard = (comicObj, e) => {
-      console.log("******* ComicCard:: sending comicObj: ", comicObj);
       navigate("/comicComplete", {
          state: {
             id: comicObj.comicId,

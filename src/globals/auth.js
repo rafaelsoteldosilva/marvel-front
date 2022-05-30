@@ -14,10 +14,7 @@ export const AuthProvider = ({ children }) => {
       setUsers((prevUsers) => {
          return [...prevUsers, user];
       });
-      console.log(
-         "****** auth:: registerNewUserAndLogin: logging user.email: ",
-         user.email
-      );
+
       setUser(user);
    };
 

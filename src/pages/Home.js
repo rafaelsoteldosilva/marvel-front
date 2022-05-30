@@ -38,10 +38,6 @@ const Home = ({
 
    useEffect(() => {
       if (auth.user) {
-         console.log(
-            "****** Home:: reading all favorites of auth.user: ",
-            auth.user
-         );
          getAllFavoriteComicsLocal(auth.user._id);
       }
    }, [auth.user]);

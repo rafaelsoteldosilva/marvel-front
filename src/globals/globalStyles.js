@@ -24,6 +24,14 @@ export const GlobalStyles = createGlobalStyle`
         font-family: "Roboto";
         font-size: 14px;
     }
+    nav {
+        background-color: aliceblue;
+        padding: 16px 32px;
+    }
+
+    nav a {
+        margin-right: 16px;
+    }
 `;
 
 export const Button = styled.button`

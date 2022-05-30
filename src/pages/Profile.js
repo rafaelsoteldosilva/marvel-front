@@ -36,7 +36,7 @@ const Profile = ({ favoriteComicsResetLocal }) => {
       <div>
          {user && (
             <ContentContainer>
-               <h2>Welcome</h2>
+               <h2>This is your profile</h2>
                <h4>{user.email}</h4>
                <button onClick={handleLogout}>Logout</button>
             </ContentContainer>

@@ -115,9 +115,6 @@ const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
 
    const performOk = () => {
       if (isSignUp) {
-         // const userFound = users.find(
-         //    (user) => user.email === formValues.email
-         // );
          if (auth.isARegisteredUser(formValues.email)) {
             alert(
                `${formValues.email} ya es un usuario registrado, por favor, haga LogIn`
@@ -256,15 +253,6 @@ const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [formValues]
    );
-
-   let errorsForStyling = errorMessagesRefValues.current;
-
-   for (let key in errorsForStyling) {
-      errorsForStyling[key] =
-         touched[key] && formValues[key].length !== 0
-            ? errorsForStyling[key]
-            : "";
-   }
 
    return (
       <ContentContainer>

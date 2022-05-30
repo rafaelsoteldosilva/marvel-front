@@ -17,6 +17,7 @@ const NavItem = css`
 export const NavElementAlwaysShow = styled(NavLink)`
    ${NavItem}
 `;
+
 export const NavElementShowWhenLoggedIn = styled(NavLink)`
    ${NavItem}
    display: ${({ logged }) => (logged ? "inline" : "none")};
