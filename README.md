@@ -399,7 +399,7 @@ export const useAuth = () => {
 
 It first defines the context that will be used.
 
-Then defines the AuthProvider itself, which defines the state variables (user, setUser, etc.), and the actions (loadUsers, registerNewUserAndLogin, logoin, logout, etc.) and the context provider.
+Then defines the AuthProvider itself, which defines the state variables (user, setUser, etc.), the actions (loadUsers, registerNewUserAndLogin, logoin, logout, etc.) and the context provider.
 
 ## - <ins>/src/globals/globalStyles.js</ins>
 
