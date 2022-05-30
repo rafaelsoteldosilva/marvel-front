@@ -268,7 +268,6 @@ const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
                   <Input
                      type="text"
                      name={email}
-                     autoComplete="new-password"
                      size="50"
                      placeholder="Enter your email"
                      value={formValues.email}
@@ -290,7 +289,6 @@ const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
                   <Input
                      type="password"
                      name={password}
-                     autoComplete="new-password"
                      size="50"
                      placeholder="Enter your passwrod"
                      value={formValues.password}

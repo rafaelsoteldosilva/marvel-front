@@ -206,7 +206,6 @@ const FieldErrorText = styled.label`
       <Input
          type="text"
          name={email}
-         autoComplete="new-password"
          size="50"
          placeholder="Enter your email"
          value={formValues.email}
@@ -218,8 +217,6 @@ const FieldErrorText = styled.label`
    </FieldErrorText>
 </FieldContainer>
 ```
-
-autoComplete="new-password" is used to prevent the browser from presenting the user with value options
 
 I declared the error messages array as a ref, so that it updates inmediately, not asynchorously as a standard state variable, this way, the error messages are always up to date
 
