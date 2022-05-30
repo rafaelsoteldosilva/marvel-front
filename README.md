@@ -82,6 +82,12 @@ const isFavorite = (favoriteComics, comicObject) => {
 }
 ```
 
+If the user clicks on a hollow heart, the comic is added to the favorites, and a solid heart is shown.
+
+![image](./imagesForReadme/favoriteComic.jpg)
+
+If the user clicks on a solid heart, the comic is removed from the favorites, and a hollow heart is shown again (unfavorite the comic).
+
 If the call to this component is from Favorites, it displays a craked icon:
 
 ![image](./imagesForReadme/onceInFavorites.jpg)
