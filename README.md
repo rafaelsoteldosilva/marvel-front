@@ -405,7 +405,7 @@ Then defines the AuthProvider itself, which defines the state variables (user, s
 
 It defines the global theme that will be used by styled components
 
-The global styles that will be applied to the whole user interface:
+It also defines the global styles that will be applied to the whole user interface:
 
 ```jsx
 export const GlobalStyles = createGlobalStyle`
@@ -445,6 +445,36 @@ These styles are applied to the wholñe application in App.js:
    </Routes>
 </AuthProvider>
 ```
+
+And the general Button, that all buttons in the app will be based on:
+
+```jsx
+export const Button = styled.button`
+   ${({ disabled }) =>
+      disabled &&
+      `
+            disabled
+        `}
+   with: 30px;
+   border-radius: 8px;
+   &:hover {
+      background-color: ${({ disabled }) => (disabled ? null : "lightgray")};
+   }
+   &:active {
+      background-color: "lightgray";
+      color: "black";
+   }
+   font-size: 0.7em;
+`;
+```
+
+If the argument disabled is true, then the button is disabled.
+
+The hover changes the buttons background color to lightgray.
+
+The active changes the buttons background color to lightgray and changes the text color to black.
+
+Etc...
 
 ## **Pages**
 
