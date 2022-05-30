@@ -148,7 +148,7 @@ const emailRE = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/u;
 const passwordRE = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/u;
 ```
 
-It uses a "touched" array, which serves to indicate that at least one of the fields has a value.
+It uses a `touched` array, which serves to indicate whether fields has a value or not.
 
 ### - Defining a field in the form
 
