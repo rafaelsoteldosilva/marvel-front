@@ -24,7 +24,9 @@ export const AuthProvider = ({ children }) => {
 
    const checkUserPassword = (email, password) => {
       const foundUser = users.find((user) => user.email === email);
-      return foundUser ? true : false;
+      if (foundUser && foundUser.password === password) {
+         return true;
+      } else return false;
    };
 
    const login = (email) => {
