@@ -94,7 +94,7 @@ const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
 
    const createUser = (user) => {
       const res = axios
-         .post("http://localhost:3001/v1/users", user)
+         .post("http://localhost:3001/v1/users/addAUser", user)
          .then((res) => {
             auth.registerNewUserAndLogin({
                _id: res.data._id,
@@ -108,9 +108,11 @@ const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
    };
 
    useEffect(() => {
-      const res = axios.get("http://localhost:3001/v1/users").then((res) => {
-         auth.loadUsers(res.data);
-      });
+      const res = axios
+         .get("http://localhost:3001/v1/users/getAllusers")
+         .then((res) => {
+            auth.loadUsers(res.data);
+         });
    }, []);
 
    const performOk = () => {

@@ -26,7 +26,9 @@ export const getFavoriteComicsFailure = (error) => ({
 export function getAllFavoriteComics(userId) {
    return (dispatch) => {
       dispatch(getFavoriteComicsBegin);
-      let apiUrl = "http://localhost:3001/v1/favoritecomics/?userId=" + userId;
+      let apiUrl =
+         "http://localhost:3001/v1/favoritecomics/getAllUsersFavoriteComics/?userId=" +
+         userId;
       axios
          .get(apiUrl)
          .then((res) => {
@@ -55,7 +57,7 @@ export function getAllFavoriteComics(userId) {
 
 export function addFavoriteComic(userId, comicObject) {
    return (dispatch) => {
-      let apiUrl = `http://localhost:3001/v1/favoritecomics/?userId=${userId}`;
+      let apiUrl = `http://localhost:3001/v1/favoritecomics/addAUsersFavoriteComic/?userId=${userId}`;
       let newFavoriteComicObect = {
          comicId: comicObject.comicId,
          comicTitle: comicObject.comicTitle,
@@ -76,7 +78,7 @@ export function addFavoriteComic(userId, comicObject) {
 
 export function deleteFavoriteComic(userId, favoriteComicId) {
    return (dispatch) => {
-      let apiUrl = `http://localhost:3001/v1/favoritecomics/?userId=${userId}&favoriteComicId=${favoriteComicId}`;
+      let apiUrl = `http://localhost:3001/v1/favoritecomics/deleteAUsersFavoriteComic/?userId=${userId}&favoriteComicId=${favoriteComicId}`;
       axios
          .delete(apiUrl)
          .then(() => {
