@@ -5,7 +5,7 @@
 <p align="center">
      <img src="./imagesForReadme/marvel-front.jpg" width="600" alt="marvel-front"/>
 </p>
-
+ 
 This app consumes the Marvel API and allows users to select their favorite marvel comics
 
 Its main technologies are

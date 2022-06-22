@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="http://google.com.au/" rel="some text">
-     <img src="./imagesForReadme/marvel-front-youtube.jpg" width="600" alt="marvel-front-youtube"/>
+     <img src="./imagesForReadme/marvel-front.jpg" width="600" alt="marvel-front"/>
   </a>
 </p>
 
