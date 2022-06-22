@@ -138,11 +138,10 @@ const ComicCard = ({
    const isfavorite = (favoriteComics, comicObject) => {
       let isFavorite = false;
       if (favoriteComics.length > 0) {
-         favoriteComics.forEach((favoriteComic) => {
-            if (parseInt(favoriteComic.comicId) === comicObject.comicId) {
-               isFavorite = true;
-            }
-         });
+         isFavorite = favoriteComics.some(
+            (favoriteComic) =>
+               parseInt(favoriteComic.comicId) === comicObject.comicId
+         );
       }
       return isFavorite;
    };

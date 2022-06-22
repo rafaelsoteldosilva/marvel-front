@@ -239,10 +239,11 @@ const LoginSignUp = ({ isSignUp, getAllFavoriteComicsLocal }) => {
    useEffect(
       () => {
          let fieldValidations = [];
+         // get an array of all the values of the fields that are not empty and correctly filled
          Object.keys(touched).forEach((field) => {
             fieldValidations.push({ field, valid: validateField(field) });
          });
-
+         // check if a required field has an incorrect value
          setDisableSendButton(
             fieldValidations.some((fieldValidations) => {
                return (

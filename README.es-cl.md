@@ -1,14 +1,16 @@
-[![es](https://img.shields.io/badge/lang-es-green.svg)](https://github.com/rafaelsoteldosilva/marvel-front/blob/main/README.es-cl.md)
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/rafaelsoteldosilva/marvel-front/blob/main/README.md)
 
 # **Marvel**
 
 <p align="center">
-     <img src="./imagesForReadme/marvel-front.jpg" width="600" alt="marvel-front"/>
+  <a href="http://google.com.au/" rel="some text">
+     <img src="./imagesForReadme/marvel-front-youtube.jpg" width="600" alt="marvel-front-youtube"/>
+  </a>
 </p>
 
-This app consumes the Marvel API and allows users to select their favorite marvel comics
+Esta app consume la API de marvel y permite a los usuarios seleccionar sus comics favoritos de Marvel
 
-Its main technologies are
+Sus principales tecnologías son:
 
 -  React,
 -  React-Redux,
@@ -16,63 +18,43 @@ Its main technologies are
 -  React Router DOM,
 -  Axios.
 
-## **Installation guide**
+## **Guía de Instalación**
 
--  GIT clone the repository in your hard drive
--  cd into the created directory, and run `npm install` which will install all needed dependencies
--  Get an APIKEY and a HASH from the Marvel portal for developers: https://developer.marvel.com/. Just subscribe and follow the instructions
+-  GIT Clone el repositorio en su disco duro
+-  Vaya al directorio creado con cd, y ejecute `npm install` el cual instalará todas las dependencias necesarias
+-  Obtenga una APIKEY y una HASH en el portal de Marvel para desarrolladores. Subscríbase y siga las instrucciones
 
 <p align="center">
   <img src="./imagesForReadme/marvel-portal.jpg" width="700" alt="marvel-portal"/>
 </p>
 
--  Create an .env file in the root directory, and place there the obtained values:
+-  Cree un archivo `.env` en el directorio raiz, coloque allí los valores obtenidos
 
 ```
-MARVEL_APIKEY=<your api key>
-MARVEL_HASH=<your hash number>
+MARVEL_APIKEY=<su clave api>
+MARVEL_HASH=<su número hash>
 ```
 
-These values will be used in the function `getAllComics` in `src/redux/actions/comicsActions.js`
+Estos valores serán usados en la función `getAllComics` en `src/redux/actions/comicsActions.js`
 
 -  Run marvel-server, in order to have the server listening to the port 3001
 -  Run the app with `npm start`
 
-## **The Project**
+## **El Proyecto**
 
-The main folder is **src**, which contains most of the components that make up the app.
+El directorio principal es `src`, el cual contiene la mayoría de los componentes que construyen la app
 
-The files will be explained in the same order as they appear in the project in `VS Code`
+Los archivos serán explicados en el orden en el que aparecen en el proyecto en `VS Code`
 
-The default page is Home, which issues a `useEffect [ ]` that fetchs the comics data from the Marvel API and sets it to the redux state.
+La página por default es `Home.js`, la cual hace un `useEffect []` que busca la información de los comics de la API de Marvel, y la coloca en el estado de `Redux`
 
-```jsx
-// src/pages/Home.js
-...
-useEffect(() => {
-   getComicsLocal();
-}, []);
-...
-```
+Los favoritos serán cargados desde Mongo DB (ver `Marvel Server`) cuando el usuario hace `login`
 
-The favorites will be loaded from MongoDB (see `Marvel Server`) when the user logs in:
-
-```jsx
-// src/pages/Home.js
-...
-useEffect(() => {
-   if (auth.user) {
-      getAllFavoriteComicsLocal(auth.user._id);
-   }
-}, [auth.user]);
-...
-```
-
-The present document will highlight the most important features of the app, leaving out the details.
+El presente documento resaltará las caracterísitcas más importantes del código de la app, dejando fuera los detalles.
 
 ## **The src folder**
 
-The sub-folders are:
+Los sub-directoios son:
 
 -  **components**
 -  **globals**
@@ -87,7 +69,7 @@ The sub-folders are:
   <img src="./imagesForReadme/comiccard.jpg" alt="comiccard"/>
 </p>
 
-This component is used by `Home.js` y `Favorites.js` to display each comic card in a grid, be it the comics from the API or the favorites:
+Este componente es usado por `Home.js` y `Favorites` para mostrar los cards comics en una rejilla, ya sean los comics de la API o los favoritos:
 
 ```jsx
 // src/pages/Home.js
@@ -103,8 +85,17 @@ comics.map((comicInfo, ndx) => {
 ```
 
 ```jsx
+// src/pages/Favorites.js
+favoriteComics.map((comicInfo, ndx) => {
+   return (
+      <ComicCard callFromFavorites={true} comicObject={comicInfo} index={ndx} />
+   );
+});
+```
+
+```jsx
 // src/components/ComicCard.js
-// In order to know if a comicObject is a favorite one
+// It receives the comicObject of the clicked comic, and looks over favoritesComics for this particular object
 ...
    const isfavorite = (favoriteComics, comicObject) => {
       let isFavorite = false;
@@ -119,8 +110,8 @@ comics.map((comicInfo, ndx) => {
 
 ...
 
-// The icon is shown depending on the procedure `isFavorite`
 
+// The icon is shown depending on the procedure `isFavorite`
 ...
 user && !callFromFavorites && (
    <ShowIcon
@@ -139,15 +130,15 @@ user && !callFromFavorites && (
 ...
 ```
 
-If the user clicks on a hollow heart, the comic is added to the favorites, and a solid heart is shown.
+Si el/la usuario hace click en un corazón hueco, el comic es añadido a la lista de favoritos, y se cambia a corazón sólido
 
 <p align="center">
   <img src="./imagesForReadme/favoriteComic.jpg" alt="favoriteComic"/>
 </p>
 
-If the user clicks on a solid heart, the comic is removed from the favorites, and a hollow heart is shown again.
+Si el/la usuario hace click en un corazón sólido, el comic es eliminado de la lista de favoritos, y se cambia a corazón hueco
 
-If the call to this component is from `Favorites.js`, it displays a craked icon, which means that the comic can be removed from the list of favorites
+Si la llamada a este componente se hace desde `Favoritos.js`, se muestra un corazón roto, el cual sirve para eliminar el comic de la lista de favoritos
 
 <p align="center">
   <img src="./imagesForReadme/onceInFavorites.jpg" alt="onceInFavorites"/>
@@ -159,9 +150,9 @@ If the call to this component is from `Favorites.js`, it displays a craked icon,
   <img src="./imagesForReadme/loginsignup.jpg" width="700" alt="loginsignup"/>
 </p>
 
-This component is used when the user selects from the menu bar, both, login or signup.
+Este componente es usado cuando el/la usuario selecciona, del menu bar, login o signup,
 
-It can be appreciated in `App.js`:
+Esto se aprecia en `App.js`:
 
 ```jsx
 // App.js
@@ -193,37 +184,37 @@ const auth = useAuth();
    }, []);
 ```
 
-It will invoke the endpoint:
+Esto ejecutará el endpoint:
 
 ```jsx
 // marvel-server/routes/usersRoutes.js
 router.route("/getAllUsers").get(UserEndpoints.getAllUsers);
 ```
 
-This request reads all users already registered in the mongo Atlas database.
+Este request lee todos los usuarios ya registrados en la base de datos Mongo DB
 
-It contains a controlled form that gets the email and password, the `login` button (which can be `Sign Up` when `isSignUp` is `true`) is activated once both fields are filled in with correct values.
+Contiene una forma controlada que obtiene el email y el password, el botón `login` (el cual puede ser `Sign Up` cuando `isSignUp` es `true`) es activado una vez que ambos campos sean llenados con valores correctos
 
-### - **Some inner details of the form**
+### - **Algunos detalles internos de la forma**
 
-The correct value for an email is a correct email address, and for the password, it's at least 8 characters long, at least a number and a letter from the alphabet.
+El valor correcto para un email es una dirección correcta de email, y para el password, es al menos 8 caracteres de largo, al menos un número y una letra del alfabeto.
 
-The form validates its fields using the following `regular expressions`:
+La forma valida sus acmpos usando las siguientes `regular expressions`:
 
 ```jsx
 const emailRE = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/u;
 const passwordRE = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/u;
 ```
 
-The form also uses a `touched` array, which serves to indicate whether the fields have a value or not.
+La forma también usa un arreglo `touched`, el cual sirve para indicar si un campo tiene un valor o nó.
 
-### - **Defining a field in the form**
+### - **definiendo un campo en la forma**
 
-This is an inputField:
+Este es un `inputField`:
 
 ![image](./imagesForReadme/inputField.jpg)
 
-I define each field as:
+Defino cada uno como:
 
 ```jsx
 // src/components/LoginSignUp.js
@@ -247,7 +238,7 @@ I define each field as:
 </FieldContainer>
 ```
 
-Note that I specify the legend and the input for each field, these elements are styled as:
+Note que especifico la legenda y el input de cada campo, estos elementos son estilizados como:
 
 ```jsx
 // src/components/LoginSignUp.js
@@ -300,9 +291,9 @@ const FieldErrorText = styled.label`
 `;
 ```
 
-I declared the error messages array as a `ref` array, so that it updates inmediately on setting, not asynchorously as a standard state variable, this way, the error messages are always up to date. I also declared a dummy state variable `forceRender`, that I set every time I change the error messages array, so that a render of the component is forced
+Declaré el arreglo de mensajes de error como un arreglo de referencias `ref`, de forma que se actualice inmediatamente al ser seteado, y no asincrónicamente como cualquier variable de estado, de esta form los mensajes de error siempre están actualizados. Declaro también un estado de mentira `forceRender`, que seteo cada vez que se cambia el arreglo de mensajes de error, de forma que se fuerza un `render` del componente.
 
-Note that an empty field is not an error, it just sets the corresponding touched value to `false`, making the login/sign up button disabled.
+Note que un campo vacío no es un error, sólo setea el valor correspondiente touched a `false`, haciendo que el botón `login/sign up` esté deshabilitado
 
 ### - **Enabling or disabling the Login/Sign Up button**
 
@@ -330,9 +321,9 @@ useEffect(
 );
 ```
 
-If one of the form values changes the previous code is executed. Then, if at least one of the fields have an incorrect value, the button is disabled, and, if all the fields have a correct value instead, the button is enabled, by setting the `disableSendButton` to `false`.
+Si alguno de los valores de la forma cambia se ejecuta el anterior código. Entonces, si alguno de los campos tiene un valor incorrecto, el botón es deshabilitado, y si en cambio todos los campos son correctos, el botón es habilitado, seteando `disableSendButton` en `false`
 
-The way to make it enabled or disabled is by associating the value of the state variable `disableSendButton` to the disabled property of the button.
+La forma de hacer al botón habilitado o deshabilitado es asociando el valor de la variable de estado `disableSendButton` a la propiedad `disabled` del botón.
 
 ```jsx
 // src/components/LoginSignUp.js
@@ -341,7 +332,7 @@ The way to make it enabled or disabled is by associating the value of the state 
 </ThisButton>
 ```
 
-The styled component `<ThisButton />` is derived from `globalStyles.Button`:
+El `styled component` `<ThisButton />` es derivado de `globalStyles.Button`:
 
 ```jsx
 // src/components/LoginSignUp.js
@@ -351,7 +342,7 @@ const ThisButton = styled(globalStyles.Button)`
 `;
 ```
 
-And `globalStyles.Button` is:
+Y `globalStyles.Button` es:
 
 ```jsx
 // globalStyles.js
@@ -367,9 +358,9 @@ export const Button = styled.button`
 
 ### **PerformOk**
 
-This procedure checks whether the user is registered or not, and if not, it suggests the user to register.
+Este procedimiento chequea si el usuario está registrado o nó, y si no, sugiere al usuario que se registre.
 
-If the user is registered, it checks whether the entered password is equal to the one saved in the database.
+Si el usuario esta registrado, chequea que el pasword indicado sea igual al guardado en la base de datos.
 
 ```jsx
 // src/components/LoginSignUp.js
@@ -412,13 +403,13 @@ const performOk = () => {
 
 ### - **<ins>/src/components/NavBar.js</ins>**
 
-It is in charge of showing the main navigation menu
+Está a cargo de mostrar el menú principal de navegación.
 
-When no user is logged in, the options are Home, Login and Sign Up.
+Cuando no hay un usuario logeado, las opciones son sólo Home, Login y Sign Up
 
-When a user is logged in, the options are Home, Favorites and Profile.
+Cuando hay un usuario logeado, las opciones son Home, Logout, Favorites, y Profile
 
-The way I show or not some options is by using an argument in styled components:
+La forma como muestro o no algunas opciones es usando argumentos en los styled components, por ejemplo este es un elemento que sólo se muestra si el usuario está logeado:
 
 ```jsx
 // src/components/NavBar.js
@@ -428,7 +419,7 @@ export const NavElementShowWhenLoggedIn = styled(NavLink)`
 `;
 ```
 
-`${NavItem}` are the default css options for any menu item:
+`${NavItem}` son las opciones por defecto de cualquier menu item:
 
 ```jsx
 // src/components/NavBar.js
@@ -439,7 +430,7 @@ const NavItem = css`
 `;
 ```
 
-Then for the display options, I ask for logged, which tells me if a user is logged in or not:
+Ahora, para las opciones de display, pregunto por `isLoggedIn`, el cual dice si el usuario está logeado o no.
 
 ```jsx
 // src/components/NavBar.js
@@ -448,9 +439,9 @@ Then for the display options, I ask for logged, which tells me if a user is logg
 </NavElementShowWhenLoggedIn>
 ```
 
-The element `<NavElementNoShowWhenLoggedIn />` is the opposite
+El elemento `<NavElementNoShowWhenLoggedIn />` es lo cantrario.
 
-The way `isLoggedIn` is set is:
+La forma como `isLoggedIn` se setea es:
 
 ```jsx
 // src/components/NavBar.js
@@ -459,17 +450,17 @@ useEffect(() => {
 }, [auth.user]);
 ```
 
-This way, if auth.user changes, the validation is done again.
+De esta forma, si `auth.user` cambia, la validación se vuelve a hacer
 
 ## **globals**
 
-The folder **globals** contains the code that delivers global features to the application, such as the global styles and the `auth` hook.
+El directorio `global` contiene el código que entrega las caracterísicas globales de la aplicación, tales como los estilos globales y el hook `auth`
 
 ### - **<ins>/src/globals/auth.js</ins>**
 
-This works as a hook that delivers to all other elements the information and actions about the user, such as, is the user logged in or not, the login function, sign up, logout, etc.
+Este funciona como un hook que entrega a todos los otros componentes y páginas la información y acciones de usuario, tales como, si el usuario está loggeado o nó, la función login, sign up, logout, etc.
 
-As all hooks, it is used as a context provider:
+Como todos los hooks, se usa como un context provider:
 
 ```jsx
 // App.js
@@ -513,15 +504,15 @@ export const useAuth = () => {
 
 ```
 
-It first defines the context that will be used.
+Primero define el contexto que será usado.
 
-Then defines the `AuthProvider` itself, which defines the state variables (user, setUser, etc.), the actions (loadUsers, registerNewUserAndLogin, logoin, logout, etc.) and the context provider.
+Entonces define el `AuthProvider`, el cual define las variables de estado (user, setUser, etc.), las acciones (loadUsers, registerNewUserAndLogin, logoin, logout, etc.) y el context provider.
 
 ### - **<ins>/src/globals/globalStyles.js</ins>**
 
-It defines the global theme that will be used by styled components
+Define el tema global que será usado por los styled components.
 
-It also defines the global styles that will be applied to the whole user interface:
+También define los estilos globales que serán aplicados a toda la interfaz
 
 ```jsx
 // src/globals/globalStyles.js
@@ -549,7 +540,7 @@ export const GlobalStyles = createGlobalStyle`
 `;
 ```
 
-These styles are applied to the whole application in App.js:
+Estos estilos son aplicados a toda la app en App.js:
 
 ```jsx
 // App.js
@@ -563,7 +554,7 @@ These styles are applied to the whole application in App.js:
 </AuthProvider>
 ```
 
-I also defines the general Button, which all buttons in the app will be based on:
+También define el botón general, del cual todos lo botones de la aplicación estarán basados
 
 ```jsx
 // src/globals/globalStyles.js
@@ -586,21 +577,21 @@ export const Button = styled.button`
 `;
 ```
 
-If the argument `disabled` is `true`, then the button is disabled.
+Si el argumento `disabled` es `true`, el botón se deshabilita.
 
-`&:hover` changes the buttons background color to `lightgray`.
+`&:hover` cambia el color de fondo del botón a `lightgray`
 
-`&:active` changes the button's background color to `lightgray` and changes the text color to `black`.
+`&:active` cambia el color de fondo del botón a `lightgray` y cambia el color de texto a `negro`
 
 Etc..
 
 ## **Pages**
 
-It includes all the pages that will be referred by the `React Router Dom`
+Incluye todas las páginas que serán referidas por el `React Router Dom`
 
 ### - **<ins>/src/pages/ComicComplete.js</ins>**
 
-It simply shows in a page the comic that the user has clicked on, be it from Home or from Favorites.
+Simplemente muestra en una página el comic al que el/la usuario ha hecho click, ya sea desde `Home.js` o de `Favorites.js`
 
 <p align="center">
   <img src="./imagesForReadme/completecomic.jpg" width="700" alt="completecomic"/>
@@ -608,39 +599,40 @@ It simply shows in a page the comic that the user has clicked on, be it from Hom
 
 ### - **<ins>/src/pages/Favorites.js</ins>**
 
-It shows the comics that have been marked as favorites by the user.
+Muestra los comics que han sido marcados por el/la usuario como favoritos.
 
 <p align="center">
   <img src="./imagesForReadme/favorites.jpg" width="700" alt="favorites"/>
 </p>
 
-It simply iterates through the global variable `favoriteComics`, and invokes the component `<ComicCard />` for each one of them.
+Simplemente itera a través del arreglo global `favoriteComics`, e invoca al componente `<ComicCard />` para cada uno de ellos
 
 ```jsx
-{
-   favoriteComics.map((comicInfo, ndx) => {
-      return (
-         <ComicCard
-            callFromFavorites={true}
-            comicObject={comicInfo}
-            index={ndx}
-         />
-      );
-   });
-}
+// src/pages/Favorites.js
+...
+favoriteComics.map((comicInfo, ndx) => {
+   return (
+      <ComicCard
+         callFromFavorites={true}
+         comicObject={comicInfo}
+         index={ndx}
+      />
+   );
+});
+...
 ```
 
 ### - **<ins>/src/pages/Home.js</ins>**
 
-This is the main and default page of the app, it shows all comic cards de la API
+Es la página principal y por defecto de la aplicación, muestra todos los comics de la API
 
-The way the user marks a comic as a favorite is by clicking the heart that appears under each comic in the `Home` page:
+La forma como el/la usuario marca un comic como favorito es dando click al corazón que aparece bajo cada comic en la página `Home`:
 
 <p align="center">
   <img src="./imagesForReadme/comiccard.jpg" alt="comiccard"/>
 </p>
 
-Once the user clicks on a heart, then the procedure `handleHeartClick` will decide whether to add or remove the comic from the favorites list.
+Una vez que el/la usuario hace click en un corazón, entonces el procedimiento `handleHeartClick` decidirá si lo añade o nó a la lista de favoritos.
 
 ```jsx
 const handleHeartClick = (comicObj, e) => {
@@ -654,11 +646,11 @@ const handleHeartClick = (comicObj, e) => {
 };
 ```
 
-If it was not favorite, the heart becomes solid, indicating that it's comic has been marked favorite, and the comic is added to the list of users's favorites (saving it to the DB as well).
+Si no era favorito, el corazón se hace sólido, indicando que su comic fue marcado como favorito, y el comic es añadido a la lista de favoritos (guardándola a la base de datos también)
 
-If it was in the list, then the heart becomes hollow, and the corresponding comic is removed from the list.
+Si estaba ya en la lista, entones el corazón se hace hueco, y el comic correspondiente es eliminado de la lista.
 
-`deleteFavoriteComicLocal()` and `addFavoriteComicLocal()` are just local versions of the corresponding redux actions `deleteFavoriteComic()` and `addFavoriteComic()`.
+`deleteFavoriteComicLocal()` y `addFavoriteComicLocal()` so sólo vaersiones locales a esta página de `deleteFavoriteComic()` y `addFavoriteComic()`.
 
 ```jsx
 function mapStateToProps(state) {
@@ -684,7 +676,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
 ### - **<ins>/src/pages/Profile.js</ins>**
 
-It simply shows the user's email, and a button to allow logging out
+Simplemente muestra el email de el/la usuario, y un botón que permite cerrar sesión
 
 <p align="center">
   <img src="./imagesForReadme/profile.jpg" width="700" alt="profile"/>
@@ -692,21 +684,21 @@ It simply shows the user's email, and a button to allow logging out
 
 ## - **Redux**
 
-`Redux` allows us to make certain information available to the entire application, a state.
+`Redux` nos permite hacer que cierta información esté disponible la aplicación, como un estado.
 
-In this app we have two redux states, the comics state and the favoriteComics state.
+En esta app tenemos dos estados de redux, el estado de comics y el de favoriteComics.
 
-Then comics state holds all the comics from the api, and favoriteComics state holds the comics that the user has marked as favorites.
+El estado de comics mantiene todos los comics de la api, y el de favoriteComics mantiene los comics que el/la usuario ha marcado como favoritos.
 
-The reason for not having a redux users state also, is that this application doesn't include a users administration, so I decided to have the users just as a simple context (`authContext`), besides, there won't be many users as there are comics in the api.
+La razón de tener un estado redux de usuarios también, es que esta aplicación no incluye administración de usuarios, por lo que decidí tener a los/las usuarios como un contexto simple (`authContext`), además, no habrán tantos usuarios como hay comics en la api.
 
 ### - **Actions folder**
 
-It contains all the action creators for both the comics reducer and the favoriteComics reducer.
+Contiene todas los `action creators` para ambos, el reducer de comics y el de favoriteComics.
 
 ### - **<ins>src\redux\actions\comicsActions.js</ins>**
 
-It defines all `actions creators` related to the comics redux state, in this case, the more important `action creator` one is the `getAllComics()`, which is used to get all the comics from the api.
+Define todos los `actions creators` relacionados con el estado redux de los comics, en este caso, el `action creator` más importante es el `getAllComics()`, que se encarga de obtener todos los comics de la api.
 
 ```jsx
 // env.MARVEL_APIKEY and env.MARVEL_HASH are my keys of the marvel api
@@ -734,49 +726,49 @@ export function getAllComics() {
 }
 ```
 
-As you can see, there are other actions creator:
+Como puede ver, hay otros`actions creators`:
 
 -  getComicsBegin
--  getComicsSuccess (This `action creator` indicates to the comic reducer to put the api data in comics state: state.comicsReducer.comics)
+-  getComicsSuccess (This `action creator` instruye al reducer de comics colocar la data de la api en el estado de comics: state.comicsReducer.comics)
 -  getComicsFailure
 
 ### - **<ins>src\redux\actions\favoriteComicsActions.js</ins>**
 
-It exposes the main `action creators` for the favoriteComics reducer:
+Expone los principales `actions creators` para el reducer de favoriteComics:
 
 -  getAllFavoriteComics
 -  addFavoriteComic
 -  deleteFavoriteComic
 
-The names are self explanatory.
+Los nombres son autoexplicativos.
 
 ### - **Reducers folder**
 
-It contains all `reducers` used in `redux`:
+Contiene los `reducers` usados en `redux`:
 
 -  comicsReducer
 -  favoriteComicsReducer
--  rootreducer, it just combines the previous reducers into one
+-  rootreducer, este sólo cambina los anteriores en uno solo.
 
 ### - **<ins>src\redux\reducers\comicsReducer.js</ins>**
 
-Performs all actions related to the comics state.
+Realiza las acciones relacionadas con el estado redux de los comics,
 
-The main purpose of these actions is to have the data of all the comics from the marvel api into the comics state.
+El propósito principal de estas acciones es tener toda la data de la api de Marvel dentro del estado redux de comics.
 
 ### - **<ins>src\redux\reducers\favoriteComicsReducer.js</ins>**
 
-Performs all actions related to the favorite comics state.
+Realiza las acciones relacionadas con el estado redux de los comics favoritos,
 
-The main purpose of these actions is to have the data of all the favorite comics that come from the mongoDb database, related to the logged in user, into the favopriteComics state.
+El propósito principal de estas acciones es tener todos los comics favoritos, relacionados con el usuario que está loggeado, dentro del estado redux de favoriteComics.
 
 ### - **Stores folder**
 
-Here is were the `redux store` is configured and created, in this case, a `thunk middleware` is included, so we have, among other things, the redux `dispatch` function. The `redux-devtools-extension` is also included
+Aquí es donde se crea y configura la `store` de redux, en este caso incluimos un `thunk middleware` para tener, entre otras cosas, la función `dispatch` de redux. También se incluye la `redux-devtools-extension`.
 
 ## **App.js**
 
-The purpose of this component is to ensamble many of the pieces toguether:
+El propósito de este componente es ensamblar todas las piezas:
 
 ```jsx
 <Provider store={configStore}>
